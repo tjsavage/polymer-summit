@@ -1,0 +1,221 @@
+<!--
+@license
+Copyright (c) 2015 The Polymer Project Authors. All rights reserved.
+This code may only be used under the BSD style license found at http://polymer.github.io/LICENSE.txt
+The complete set of authors may be found at http://polymer.github.io/AUTHORS.txt
+The complete set of contributors may be found at http://polymer.github.io/CONTRIBUTORS.txt
+Code distributed by Google as part of the polymer project is also
+subject to an additional IP rights grant found at http://polymer.github.io/PATENTS.txt
+-->
+
+<link rel="import" href="../../polymer/polymer.html">
+<link rel="import" href="../../iron-media-query/iron-media-query.html">
+<link rel="import" href="../../iron-resizable-behavior/iron-resizable-behavior.html">
+<link rel="import" href="../x-drawer/x-drawer.html">
+<link rel="import" href="../x-overlay/x-scrim.html">
+
+
+<dom-module id="x-drawer-layout">
+
+  <style>
+
+    :host {
+      display: block;
+      /* stacking context */
+      /* 1. isolation: isolate; */
+      /* 1. z-index:0 & position:relative or position:absolute; */
+      isolation: isolate;
+
+      --drawer-layout-trbl: {
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: 0;
+      };
+    }
+
+    :host([fullbleed]) {
+      position: absolute;
+      @apply(--drawer-layout-trbl);
+    }
+
+    x-drawer {
+      position: fixed;
+      overflow-y: auto;
+
+    }
+
+    :host([narrow]) x-drawer {
+      z-index: 2;
+    }
+
+    :host([narrow][opened]) x-drawer {
+      box-shadow: 1px 0 2px 1px rgba(0,0,0,0.18);
+    }
+
+    :host([narrow][opened]) x-drawer[position=right] {
+      box-shadow: -1px 0 2px 1px rgba(0,0,0,0.18);
+    }
+
+    #main {
+      position: relative;
+      height: 100%;
+      z-index: 1;
+    }
+
+    :host([fullbleed]) > #main > ::content > * {
+      position: absolute;
+      @apply(--drawer-layout-trbl);
+    }
+
+    :host(:not([narrow])) ::content [drawer-toggle] {
+      display: none;
+    }
+
+  </style>
+
+  <template>
+
+    <x-drawer id="drawerContainer" position="[[_drawerPosition(rightDrawer)]]"
+        opened="[[_drawerOpened(narrow, opened)]]" style$="[[_computeDrawerStyle(drawerWidth)]]"
+        on-iron-activate="_drawerActivate">
+      <content id="drawer" select="[drawer]"></content>
+    </x-drawer>
+
+    <div id="main" style$="[[_computeMainStyle(narrow, drawerWidth)]]">
+      <content></content>
+      <x-scrim id="scrim" visible$="[[_scrimVisible(narrow, opened)]]" on-tap="toggleDrawer"></x-scrim>
+    </div>
+
+    <iron-media-query query="[[_computeMediaQuery(forceNarrow, responsiveWidth)]]"
+        on-query-matches-changed="_onQueryMatchesChanged"></iron-media-query>
+
+  </template>
+
+  <script>
+
+    Polymer({
+
+      is: 'x-drawer-layout',
+
+      behaviors: [
+        Polymer.IronResizableBehavior,
+      ],
+
+      properties: {
+
+        narrow: {
+          type: Boolean,
+          readOnly: true,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        forceNarrow: {
+          type: Boolean,
+          value: false,
+          observer: '_responsiveChange'
+        },
+
+        responsiveWidth: {
+          value: '640px'
+        },
+
+        drawerWidth: {
+          value: '256px'
+        },
+
+        opened: {
+          type: Boolean,
+          notify: true,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        fullbleed: {
+          type: Boolean,
+          reflectToAttribute: true,
+          value: false
+        },
+
+        rightDrawer: {
+          type: Boolean,
+          value: false
+        },
+
+        disableDrawerActivate: {
+          type: Boolean,
+          value: false
+        }
+      },
+
+      listeners: {
+        tap: '_tapHandler'
+      },
+
+      attached: function() {
+        this.fire('iron-resize');
+      },
+
+      toggleDrawer: function() {
+        this.opened = !this.opened;
+      },
+
+      get drawer() {
+        return Polymer.dom(this.$.drawer).getDistributedNodes()[0];
+      },
+
+      _tapHandler: function(e) {
+        var target = Polymer.dom(e).localTarget;
+        if (target && target.hasAttribute('drawer-toggle')) {
+          this.toggleDrawer();
+        }
+      },
+
+      _drawerOpened: function(narrow, opened) {
+        return !narrow || opened;
+      },
+
+      _drawerPosition: function(rightDrawer) {
+        return rightDrawer ? 'right' : 'left';
+      },
+
+      _drawerActivate: function() {
+        if (!this.disableDrawerActivate && this.narrow) {
+          this.async(function() {
+            this.opened = false;
+          }.bind(this));
+        }
+      },
+
+      _responsiveChange: function(narrow) {
+        this._setNarrow(narrow);
+        this.async(this.notifyResize);
+      },
+
+      _onQueryMatchesChanged: function(event) {
+        this._responsiveChange(event.detail.value);
+      },
+
+      _computeMediaQuery: function(forceNarrow, responsiveWidth) {
+        return forceNarrow ? '' : '(max-width: ' + responsiveWidth + ')';
+      },
+
+      _scrimVisible: function(narrow, opened) {
+        return narrow && opened;
+      },
+
+      _computeDrawerStyle: function(drawerWidth) {
+        var css = 'width: ' + drawerWidth;
+        return css;
+      },
+
+      _computeMainStyle: function(narrow, drawerWidth) {
+        return 'margin-left: ' + (narrow ? '' : drawerWidth);
+      }
+
+    });
+
+  </script>
+
+</dom-module>
