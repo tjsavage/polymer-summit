@@ -18,7 +18,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <title>Polymer Summit 2015</title>
 
-  <link rel="shortcut icon" href="/summit/images/logo-32.png">
+  <link rel="shortcut icon" href="./images/logo-32.png">
 
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="application-name" content="Polymer Summit 2015">
@@ -40,7 +40,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
   <link rel="stylesheet" href="./styles/main.css">
 
-  <script src="../bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
+  <script src="./bower_components/webcomponentsjs/webcomponents-lite.min.js"></script>
   <link rel="import" href="./src/elements.html">
 </head>
 <body unresolved>
@@ -52,9 +52,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
       <div class="nav fit" drawer>
         <iron-selector class="menu" selected="[[page]]" activate-event="click" attr-for-selected="name">
           <a name="home" class="menu-item" href="/summit">HOME</a><br>
-          <a name="schedule" class="menu-item" href="/summit/schedule">SCHEDULE</a><br>
-          <a name="speakers" class="menu-item" href="/summit/speakers">SPEAKERS</a>
-          <a name="codelabs" class="menu-item" href="/summit/codelabs" target="_blank">CODELABS</a>
+          <a name="schedule" class="menu-item" href="./schedule">SCHEDULE</a><br>
+          <a name="speakers" class="menu-item" href="./speakers">SPEAKERS</a>
+          <a name="codelabs" class="menu-item" href="./codelabs" target="_blank">CODELABS</a>
         </iron-selector>
       </div>
 
@@ -66,9 +66,9 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
             <div class="flex horizontal center-center layout">
               <iron-selector class="wide-only" selected="[[page]]" activate-event="click" attr-for-selected="name">
-                <a name="schedule" class="tab" href="/summit/schedule">SCHEDULE</a>
-                <a name="speakers" class="tab" href="/summit/speakers">SPEAKERS</a>
-                <a name="codelabs" class="tab" href="/summit/codelabs" target="_blank">CODELABS</a>
+                <a name="schedule" class="tab" href="./schedule">SCHEDULE</a>
+                <a name="speakers" class="tab" href="./speakers">SPEAKERS</a>
+                <a name="codelabs" class="tab" href="./codelabs" target="_blank">CODELABS</a>
               </iron-selector>
             </div>
 
@@ -130,7 +130,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
               </div>
               <div>
                 <span>Or </span>
-                  <a class="pink-arrow-btn" target="_blank" href="/summit/codelabs" data-outbound="code-labs">Try a codelab
+                  <a class="pink-arrow-btn" target="_blank" href="./codelabs" data-outbound="code-labs">Try a codelab
                   </a> from home.
               </div>
             </div>
@@ -220,7 +220,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
                   <h3>Code labs are available throughout the Summit</h3>
                   <p>Even if you're not in attendance, they're available online for you to work from the comfort of your own home or favorite coffee shop.</p>
                 </div>
-                <a tabindex="-1" target="_blank" href="/summit/codelabs" data-outbound="code-labs">
+                <a tabindex="-1" target="_blank" href="./codelabs" data-outbound="code-labs">
                   <paper-button class="anchor-button blue" raised>Start a codelab!</paper-button>
                 </a>
               </paper-material>
@@ -243,7 +243,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
           </div>
           <div>
             <span>Or </span>
-            <a class="pink-arrow-btn" target="_blank" href="/summit/codelabs" data-outbound="code-labs">Try a codelab
+            <a class="pink-arrow-btn" target="_blank" href="./codelabs" data-outbound="code-labs">Try a codelab
             </a> from home.
           </div>
         </div>
@@ -268,7 +268,7 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
             <div class="dot-separator wide-only"></div>
             <a target="_blank" href="https://www.polymer-project.org" data-outbound="about-polymer">About Polymer</a>
             <div class="dot-separator wide-only"></div>
-            <a target="_blank" href="/summit/code-of-conduct.html" data-outbound="code-of-conduct">Code of Conduct</a>
+            <a target="_blank" href="./code-of-conduct.html" data-outbound="code-of-conduct">Code of Conduct</a>
           </div>
         </footer>
 
@@ -278,8 +278,8 @@ subject to an additional IP rights grant found at http://polymer.github.io/PATEN
 
     <iron-media-query query="(max-width: 643px)" query-matches="{{narrowLayout}}"></iron-media-query>
 
-    <iron-ajax auto url="/summit/data/speakers.json" last-response="{{speakers}}"></iron-ajax>
-    <iron-ajax auto url="/summit/data/schedule.json" last-response="{{schedule}}"></iron-ajax>
+    <iron-ajax auto url="./data/speakers.json" last-response="{{speakers}}"></iron-ajax>
+    <iron-ajax auto url="./data/schedule.json" last-response="{{schedule}}"></iron-ajax>
 
     <x-scrollpos-control selected="[[page]]"></x-scrollpos-control>
 
